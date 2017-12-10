@@ -30,26 +30,21 @@ def softmax(x):
 
     if len(x.shape) > 1:
         # Matrix
-        ### YOUR CODE HERE
-        exp_minmax = lambda x: np.exp(x - np.max(x))
-        denom = lambda x: 1.0 / np.sum(x)
-        x = np.apply_along_axis(exp_minmax, 1, x)
-        denominator = np.apply_along_axis(denom, 1, x)
-
-        if len(denominator.shape) == 1:
-            denominator = denominator.reshape((denominator.shape[0], 1))
-
-        x = x * denominator
-        ### END YOUR CODE
+        # YOUR CODE HERE
+        x = np.apply_along_axis(lambda x: np.exp(x - np.max(x)), 1, x)
+        denominator = np.apply_along_axis(lambda x: 1.0 / np.sum(x), 1, x)
+        print denominator
+        denominator = denominator.reshape(denominator.shape[0], 1)
+        return x * denominator
+        # END YOUR CODE
     else:
         # Vector
-        ### YOUR CODE HERE
-        x_max = np.max(x)
-        x = x - x_max
-        numerator = np.exp(x)
+        # YOUR CODE HERE
+        max_e = np.max(x)
+        numerator = np.exp(x - max_e)
         denominator = 1.0 / np.sum(numerator)
         x = numerator.dot(denominator)
-        ### END YOUR CODE
+        # END YOUR CODE
 
     assert x.shape == orig_shape
     return x
@@ -63,7 +58,7 @@ def test_softmax_basic():
     print "Running basic tests..."
     test1 = softmax(np.array([1, 2]))
     print test1
-    ans1 = np.array([0.26894142, 0.73105858])
+    ans1 = np.array([0.26894142,  0.73105858])
     assert np.allclose(test1, ans1, rtol=1e-05, atol=1e-06)
 
     test2 = softmax(np.array([[1001, 1002], [3, 4]]))
@@ -89,9 +84,8 @@ def test_softmax():
     your tests be graded.
     """
     print "Running your tests..."
-    ### YOUR CODE HERE
-    raise NotImplementedError
-    ### END YOUR CODE
+    # YOUR CODE HERE
+    # END YOUR CODE
 
 
 if __name__ == "__main__":
